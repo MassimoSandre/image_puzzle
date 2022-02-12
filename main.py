@@ -6,7 +6,7 @@ from puzzle import Puzzle
 
 pygame.init()
 pygame.font.init()
-SIZE = WIDTH, HEIGHT = (1024,1024)
+SIZE = WIDTH, HEIGHT = (1000,1000)
 
 BGCOLOR = (50,50,50)
 GFONT = pygame.font.SysFont("Comic Sans MS", 30)
@@ -14,7 +14,7 @@ window = pygame.display.set_mode(SIZE,pygame.RESIZABLE)
 pygame.display.set_caption('test')
 clock = Clock()
 
-p = Puzzle("sium.jpg",(4,4))
+p = Puzzle("image.jpg", (653,980),(3,3), (173,10))
 p.scramble()
 
 def main():
@@ -28,24 +28,24 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    if not w:
-                        p.move_up()
-                        w = True
-                elif event.key == pygame.K_a:
-                    if not a:
-                        p.move_left()
-                        a = True
-                elif event.key == pygame.K_s:
-                    if not s:
-                        p.move_down()
-                        s = True
-                elif event.key == pygame.K_d:
-                    if not d:
-                        p.move_right()
-                        d = True
+            if p.moves_allowed():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w:
+                        if not w:
+                            p.move_up()
+                            w = True
+                    elif event.key == pygame.K_a:
+                        if not a:
+                            p.move_left()
+                            a = True
+                    elif event.key == pygame.K_s:
+                        if not s:
+                            p.move_down()
+                            s = True
+                    elif event.key == pygame.K_d:
+                        if not d:
+                            p.move_right()
+                            d = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
@@ -59,10 +59,11 @@ def main():
 
         window.fill(BGCOLOR)
 
-        p.render(window, (0,0), (1024,1024))
+        p.update()
+        p.render(window)
 
         if p.is_solved():
-            print("sium")
+            p.reveal(window)
 
 
         pygame.display.update()
